@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="pt-br" translate="no">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/jpg" href="https://i.postimg.cc/T3hr6XvR/logo.webp">
+    <title>{{PRODUCT_NAME}} - Flow Burger</title>
+    <link type="text/css" href="../css/delivry.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Mantém o estilo visual do Flow Burger */
+        body {
+            background-color: #ffffff !important;
+        }
+        
+        .product-header {
+            background: linear-gradient(135deg, #ef1d2c, #fc6a05);
+            color: white;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .back-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .product-image {
+            width: 100%;
+            max-width: 400px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin: 20px auto;
+            display: block;
+        }
+        
+        .product-info {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .product-name {
+            color: #fc6a05;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .product-description {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .price-info {
+            margin: 20px 0;
+        }
+        
+        .original-price {
+            color: #999;
+            text-decoration: line-through;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        
+        .current-price {
+            background: #077c22;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+        
+        .section {
+            background: white;
+            margin: 15px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .section-title {
+            color: #333;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .required-badge {
+            background: #ef1d2c;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        
+        .optional-badge {
+            background: #999;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        
+        .option-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid #f0f0f0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .option-item:hover {
+            border-color: #fc6a05;
+        }
+        
+        .option-item.selected {
+            border-color: #ef1d2c;
+            background: #fff5f5;
+        }
+        
+        .option-radio {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .option-item.selected .option-radio {
+            border-color: #ef1d2c;
+        }
+        
+        .option-radio::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: #ef1d2c;
+            border-radius: 50%;
+            display: none;
+        }
+        
+        .option-item.selected .option-radio::after {
+            display: block;
+        }
+        
+        .option-info {
+            flex: 1;
+        }
+        
+        .option-name {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .option-description {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .option-price {
+            color: #fc6a05;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .complement-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #f0f0f0;
+            border-radius: 12px;
+        }
+        
+        .complement-info {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+        
+        .complement-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+        
+        .complement-details {
+            flex: 1;
+        }
+        
+        .complement-name {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 3px;
+        }
+        
+        .complement-description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+        
+        .complement-price {
+            color: #fc6a05;
+            font-weight: 600;
+        }
+        
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .quantity-btn {
+            width: 35px;
+            height: 35px;
+            background: #f8f8f8;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+        }
+        
+        .quantity-btn:hover {
+            background: #fc6a05;
+            color: white;
+        }
+        
+        .quantity-btn:disabled {
+            background: #f0f0f0;
+            color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .quantity-btn:disabled:hover {
+            background: #f0f0f0;
+            color: #ccc;
+        }
+        
+        .quantity-display {
+            width: 40px;
+            text-align: center;
+            font-weight: 500;
+            background: white;
+            border: none;
+            padding: 8px 0;
+        }
+        
+        .observations {
+            margin: 15px;
+        }
+        
+        .observations textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 15px;
+            border: 2px solid #f0f0f0;
+            border-radius: 12px;
+            resize: vertical;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+        }
+        
+        .observations textarea:focus {
+            border-color: #fc6a05;
+            outline: none;
+        }
+        
+        .order-summary {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            padding: 20px;
+            border-top: 1px solid #f0f0f0;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            color: #666;
+        }
+        
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            font-size: 18px;
+            color: #333;
+            padding-top: 10px;
+            border-top: 1px solid #f0f0f0;
+            margin-top: 10px;
+        }
+        
+        .add-to-cart-btn {
+            width: 100%;
+            background: #fc6a05;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .add-to-cart-btn:hover {
+            background: #e55a04;
+        }
+        
+        .add-to-cart-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .related-products {
+            margin: 30px 15px;
+        }
+        
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .related-item {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .related-item:hover {
+            border-color: #fc6a05;
+            transform: translateY(-2px);
+        }
+        
+        .related-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            margin: 0 auto 10px;
+            object-fit: cover;
+        }
+        
+        .related-name {
+            font-weight: 500;
+            color: #333;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .related-price {
+            color: #fc6a05;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        /* Mobile responsivo */
+        @media (max-width: 768px) {
+            .section {
+                margin: 10px;
+                padding: 15px;
+            }
+            
+            .product-name {
+                font-size: 20px;
+            }
+            
+            .current-price {
+                font-size: 20px;
+            }
+            
+            .order-summary {
+                padding: 15px;
+            }
+        }
+        
+        /* Desktop - layout em duas colunas */
+        @media (min-width: 1024px) {
+            .desktop-layout {
+                display: grid;
+                grid-template-columns: 2fr 1fr;
+                gap: 30px;
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+            
+            .product-content {
+                padding-right: 15px;
+            }
+            
+            .order-summary {
+                position: sticky;
+                top: 100px;
+                height: fit-content;
+                border: 1px solid #f0f0f0;
+                border-radius: 15px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cabeçalho -->
+    <div class="product-header">
+        <div class="container" style="display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            <button class="back-button" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <div style="flex: 1; text-align: center;">
+                <h1 style="margin: 0; font-size: 18px;">{{PRODUCT_NAME}}</h1>
+                <small>Flow Burger</small>
+            </div>
+            <div style="width: 40px;"></div> <!-- Espacer for balance -->
+        </div>
+    </div>
+
+    <div class="desktop-layout">
+        <div class="product-content">
+            <!-- Área principal do produto -->
+            <div class="product-info">
+                <img src="../imgs/{{PRODUCT_IMAGE}}" alt="{{PRODUCT_NAME}}" class="product-image">
+                <h2 class="product-name">{{PRODUCT_NAME}}</h2>
+                <p class="product-description">{{PRODUCT_DESCRIPTION}}</p>
+                <div class="price-info">
+                    <span class="original-price">{{ORIGINAL_PRICE}}</span>
+                    <span class="current-price">{{CURRENT_PRICE}}</span>
+                </div>
+                <div style="color: #077c22; font-weight: 500; margin-top: 10px;">
+                    <i class="fas fa-shipping-fast"></i> Frete Grátis
+                </div>
+            </div>
+
+            <!-- Seção de opções obrigatórias -->
+            <div class="section" id="required-options">
+                <div class="section-title">
+                    Escolha sua opção
+                    <span class="required-badge">Obrigatório</span>
+                </div>
+                <div id="required-options-list">
+                    <!-- Opções serão inseridas via JavaScript -->
+                </div>
+            </div>
+
+            <!-- Seção de complementos -->
+            <div class="section">
+                <div class="section-title">
+                    Complementos
+                    <span class="optional-badge">Opcional</span>
+                </div>
+                <div id="complements-list">
+                    <!-- Complementos serão inseridos via JavaScript -->
+                </div>
+            </div>
+
+            <!-- Campo de observações -->
+            <div class="section observations">
+                <div class="section-title">Observações</div>
+                <textarea placeholder="Alguma observação? Escreva aqui (ex: tirar cebola, ponto da carne, etc.)" id="observations"></textarea>
+            </div>
+
+            <!-- Produtos relacionados -->
+            <div class="related-products">
+                <div class="section-title">Você também pode gostar</div>
+                <div class="related-grid" id="related-products">
+                    <!-- Produtos relacionados serão inseridos via JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Resumo do pedido -->
+        <div class="order-summary">
+            <h3 style="color: #333; margin-bottom: 15px;">Resumo do Pedido</h3>
+            <div id="summary-items">
+                <div class="summary-item">
+                    <span id="base-product-name">{{PRODUCT_NAME}}</span>
+                    <span id="base-product-price">{{CURRENT_PRICE}}</span>
+                </div>
+            </div>
+            <div class="summary-total">
+                <span>Total</span>
+                <span id="total-price">{{CURRENT_PRICE}}</span>
+            </div>
+            <button class="add-to-cart-btn" id="add-to-cart" disabled>
+                Adicionar ao Pedido
+            </button>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Dados do produto (serão substituídos em cada página)
+        let productData = {
+            id: '{{PRODUCT_ID}}',
+            name: '{{PRODUCT_NAME}}',
+            basePrice: {{BASE_PRICE}},
+            requiredOptions: [],
+            complements: [],
+            relatedProducts: []
+        };
+
+        let selectedOptions = {};
+        let selectedComplements = {};
+        let totalPrice = productData.basePrice;
+
+        // Função para voltar
+        function goBack() {
+            window.history.back();
+        }
+
+        // Função para renderizar opções obrigatórias
+        function renderRequiredOptions(options) {
+            const container = document.getElementById('required-options-list');
+            container.innerHTML = '';
+            
+            options.forEach(option => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option-item';
+                optionElement.dataset.optionId = option.id;
+                optionElement.innerHTML = `
+                    <div class="option-radio"></div>
+                    <div class="option-info">
+                        <div class="option-name">${option.name}</div>
+                        <div class="option-description">${option.description}</div>
+                    </div>
+                    <div class="option-price">${option.price > 0 ? `+R$ ${option.price.toFixed(2)}` : ''}</div>
+                `;
+                
+                optionElement.addEventListener('click', () => selectOption(option.id, option));
+                container.appendChild(optionElement);
+            });
+        }
+
+        // Função para renderizar complementos
+        function renderComplements(complements) {
+            const container = document.getElementById('complements-list');
+            container.innerHTML = '';
+            
+            complements.forEach(complement => {
+                const complementElement = document.createElement('div');
+                complementElement.className = 'complement-item';
+                complementElement.innerHTML = `
+                    <div class="complement-info">
+                        <img src="../imgs/${complement.image}" alt="${complement.name}" class="complement-image">
+                        <div class="complement-details">
+                            <div class="complement-name">${complement.name}</div>
+                            <div class="complement-description">${complement.description}</div>
+                            <div class="complement-price">+R$ ${complement.price.toFixed(2)}</div>
+                        </div>
+                    </div>
+                    <div class="quantity-control">
+                        <button class="quantity-btn" onclick="changeQuantity('${complement.id}', -1)">-</button>
+                        <input type="number" class="quantity-display" value="0" readonly id="qty-${complement.id}">
+                        <button class="quantity-btn" onclick="changeQuantity('${complement.id}', 1)">+</button>
+                    </div>
+                `;
+                container.appendChild(complementElement);
+            });
+        }
+
+        // Função para selecionar opção obrigatória
+        function selectOption(optionId, option) {
+            // Remove seleção anterior
+            document.querySelectorAll('.option-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // Adiciona nova seleção
+            document.querySelector(`[data-option-id="${optionId}"]`).classList.add('selected');
+            selectedOptions.required = option;
+            
+            updateSummary();
+            checkCanAddToCart();
+        }
+
+        // Função para alterar quantidade de complementos
+        function changeQuantity(complementId, change) {
+            const qtyInput = document.getElementById(`qty-${complementId}`);
+            const currentQty = parseInt(qtyInput.value);
+            const newQty = Math.max(0, currentQty + change);
+            
+            qtyInput.value = newQty;
+            
+            if (newQty === 0) {
+                delete selectedComplements[complementId];
+            } else {
+                const complement = productData.complements.find(c => c.id === complementId);
+                selectedComplements[complementId] = {
+                    ...complement,
+                    quantity: newQty
+                };
+            }
+            
+            updateSummary();
+        }
+
+        // Função para atualizar resumo
+        function updateSummary() {
+            const summaryItems = document.getElementById('summary-items');
+            const totalPriceElement = document.getElementById('total-price');
+            
+            let html = `
+                <div class="summary-item">
+                    <span>${productData.name}</span>
+                    <span>R$ ${productData.basePrice.toFixed(2)}</span>
+                </div>
+            `;
+            
+            let total = productData.basePrice;
+            
+            // Adicionar opção selecionada
+            if (selectedOptions.required && selectedOptions.required.price > 0) {
+                html += `
+                    <div class="summary-item">
+                        <span>• ${selectedOptions.required.name}</span>
+                        <span>+R$ ${selectedOptions.required.price.toFixed(2)}</span>
+                    </div>
+                `;
+                total += selectedOptions.required.price;
+            }
+            
+            // Adicionar complementos
+            Object.values(selectedComplements).forEach(complement => {
+                const subtotal = complement.price * complement.quantity;
+                html += `
+                    <div class="summary-item">
+                        <span>• ${complement.name} (${complement.quantity}x)</span>
+                        <span>+R$ ${subtotal.toFixed(2)}</span>
+                    </div>
+                `;
+                total += subtotal;
+            });
+            
+            summaryItems.innerHTML = html;
+            totalPriceElement.textContent = `R$ ${total.toFixed(2)}`;
+            totalPrice = total;
+        }
+
+        // Função para verificar se pode adicionar ao carrinho
+        function checkCanAddToCart() {
+            const addButton = document.getElementById('add-to-cart');
+            const hasRequiredOption = selectedOptions.required || productData.requiredOptions.length === 0;
+            
+            addButton.disabled = !hasRequiredOption;
+        }
+
+        // Função para adicionar ao carrinho
+        function addToCart() {
+            const observations = document.getElementById('observations').value;
+            
+            const orderItem = {
+                productId: productData.id,
+                productName: productData.name,
+                basePrice: productData.basePrice,
+                selectedOptions: selectedOptions,
+                selectedComplements: selectedComplements,
+                observations: observations,
+                totalPrice: totalPrice,
+                quantity: 1
+            };
+            
+            // Salvar no localStorage (simulando carrinho)
+            let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            cart.push(orderItem);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            // Mostrar confirmação
+            alert('Produto adicionado ao carrinho!');
+            
+            // Voltar para página principal
+            window.location.href = '../index.html';
+        }
+
+        // Event listeners
+        document.getElementById('add-to-cart').addEventListener('click', addToCart);
+
+        // Inicializar página
+        document.addEventListener('DOMContentLoaded', function() {
+            renderRequiredOptions(productData.requiredOptions);
+            renderComplements(productData.complements);
+            updateSummary();
+            checkCanAddToCart();
+        });
+    </script>
+</body>
+</html>

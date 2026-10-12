@@ -1,0 +1,775 @@
+/* ==========================================================================
+   Personalização de Produto - Flow Burger
+   Tela limpa e minimalista (mobile first) com cabeçalho fixo,
+   lista de complementos e barra de compra fixa no rodapé.
+   ========================================================================== */
+
+:root {
+    --pz-red: #ef1d2c;
+    --pz-orange: #fc6a05;
+    --pz-green: #077c22;
+    --pz-ink: #1f1f1f;
+    --pz-ink-soft: #6f6f6f;
+    --pz-ink-mute: #9a9a9a;
+    --pz-line: #f0f0f0;
+    --pz-line-strong: #e4e4e4;
+    --pz-band: #f6f6f7;
+    --pz-tint: #fff5f2;
+    --pz-radius: 14px;
+}
+
+/* --------------------------------------------------------------------------
+   Overlay / estrutura
+   -------------------------------------------------------------------------- */
+
+.pz-overlay,
+.pz-overlay *,
+.pz-overlay *::before,
+.pz-overlay *::after {
+    box-sizing: border-box;
+}
+
+.pz-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.22s ease, visibility 0.22s ease;
+}
+
+.pz-overlay.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.pz-modal {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    font-family: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: var(--pz-ink);
+    transform: translateY(24px);
+    transition: transform 0.24s ease;
+}
+
+.pz-overlay.is-open .pz-modal {
+    transform: translateY(0);
+}
+
+/* Tablet / desktop: caixa centralizada, largura máxima */
+@media (min-width: 768px) {
+    .pz-overlay {
+        background: rgba(0, 0, 0, 0.55);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+    }
+
+    .pz-modal {
+        position: relative;
+        inset: auto;
+        width: 100%;
+        max-width: 640px;
+        height: min(880px, calc(100vh - 48px));
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+        transform: translateY(16px) scale(0.98);
+    }
+
+    .pz-overlay.is-open .pz-modal {
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* --------------------------------------------------------------------------
+   1. Cabeçalho fixo
+   -------------------------------------------------------------------------- */
+
+.pz-header {
+    position: relative;
+    flex: 0 0 auto;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 8px;
+    background: #fff;
+    border-bottom: 1px solid var(--pz-line);
+    z-index: 3;
+}
+
+.pz-back {
+    width: 40px;
+    height: 40px;
+    flex: none;
+    display: grid;
+    place-items: center;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--pz-ink);
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.pz-back:hover {
+    background: var(--pz-band);
+}
+
+.pz-back:active {
+    background: var(--pz-line-strong);
+}
+
+.pz-back svg {
+    display: block;
+}
+
+.pz-title {
+    position: absolute;
+    left: 48px;
+    right: 48px;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    color: var(--pz-ink);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+}
+
+.pz-header-spacer {
+    width: 40px;
+    flex: none;
+}
+
+/* --------------------------------------------------------------------------
+   Área rolável
+   -------------------------------------------------------------------------- */
+
+.pz-body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    background: #fff;
+}
+
+.pz-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.pz-body::-webkit-scrollbar-thumb {
+    background: #dcdcdc;
+    border-radius: 6px;
+}
+
+/* --------------------------------------------------------------------------
+   1b. Foto principal do produto
+   -------------------------------------------------------------------------- */
+
+.pz-hero {
+    margin: 12px 16px 0;
+    height: auto;
+    background: var(--pz-band);
+    overflow: hidden;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.pz-hero-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 120px;
+    object-fit: contain;
+    object-position: center;
+    color: transparent;
+}
+
+@media (max-width: 359px) {
+    .pz-hero {
+        margin: 10px 12px 0;
+        border-radius: 14px;
+    }
+}
+
+@media (min-width: 768px) {
+    .pz-hero {
+        margin: 16px 16px 0;
+        height: 230px;
+        border-radius: 18px;
+    }
+
+    .pz-hero-img {
+        height: 100%;
+        min-height: 0;
+        object-fit: cover;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   2. Informações do produto
+   -------------------------------------------------------------------------- */
+
+.pz-info {
+    padding: 16px;
+    border-bottom: 1px solid var(--pz-line);
+}
+
+.pz-delivery {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    color: var(--pz-green);
+    font-size: 13.5px;
+    font-weight: 600;
+}
+
+.pz-delivery svg {
+    flex: none;
+}
+
+.pz-notice {
+    margin: 6px 0 0;
+    color: var(--pz-ink-soft);
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.pz-price-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.pz-price {
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--pz-ink);
+}
+
+.pz-price-old {
+    font-size: 14px;
+    color: var(--pz-ink-mute);
+    text-decoration: line-through;
+}
+
+.pz-badge {
+    padding: 3px 7px;
+    border-radius: 6px;
+    background: var(--pz-orange);
+    color: #fff;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+}
+
+.pz-desc {
+    margin: 10px 0 0;
+    color: var(--pz-ink-soft);
+    font-size: 13.5px;
+    line-height: 1.55;
+}
+
+/* --------------------------------------------------------------------------
+   3. Seções de complementos
+   -------------------------------------------------------------------------- */
+
+.pz-group {
+    border-bottom: 1px solid var(--pz-line);
+}
+
+.pz-group-head {
+    padding: 16px 16px 12px;
+    background: var(--pz-band);
+}
+
+.pz-group-title {
+    margin: 0;
+    font-size: 16.5px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--pz-ink);
+}
+
+.pz-group-sub {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: var(--pz-ink-soft);
+    line-height: 1.4;
+}
+
+.pz-group-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.pz-required {
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: #fdecec;
+    color: var(--pz-red);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.pz-optional {
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: #ececec;
+    color: var(--pz-ink-soft);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.pz-counter {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--pz-ink-mute);
+    font-variant-numeric: tabular-nums;
+}
+
+.pz-counter.is-done {
+    color: var(--pz-green);
+}
+
+/* --------------------------------------------------------------------------
+   4. Linhas de complementos
+   -------------------------------------------------------------------------- */
+
+.pz-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+}
+
+.pz-option {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 16px;
+    background: #fff;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.pz-option::after {
+    content: "";
+    position: absolute;
+    left: 16px;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: var(--pz-line);
+}
+
+.pz-option:last-child::after {
+    display: none;
+}
+
+.pz-option.is-selected {
+    background: var(--pz-tint);
+}
+
+.pz-option.is-blocked {
+    opacity: 0.45;
+    cursor: default;
+}
+
+.pz-opt-text {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.pz-opt-name {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--pz-ink);
+}
+
+.pz-opt-desc {
+    display: block;
+    margin-top: 3px;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--pz-ink-soft);
+}
+
+.pz-opt-price {
+    display: block;
+    margin-top: 6px;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--pz-orange);
+}
+
+.pz-opt-price.is-free {
+    color: var(--pz-green);
+}
+
+.pz-opt-img {
+    flex: none;
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    object-fit: cover;
+    background: var(--pz-band);
+    border: 1px solid var(--pz-line);
+}
+
+.pz-opt-ctrl {
+    flex: none;
+    width: 88px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+/* Botão "+" (item não selecionado) */
+.pz-plus {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border: none;
+    background: transparent;
+    color: var(--pz-red);
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 1;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.pz-plus:hover {
+    background: #fdecec;
+}
+
+.pz-plus:disabled {
+    color: var(--pz-ink-mute);
+    cursor: not-allowed;
+    background: transparent;
+}
+
+/* Seleção única: marca de confirmação */
+.pz-radio {
+    display: none;
+    width: 40px;
+    height: 40px;
+    place-items: center;
+    border: none;
+    border-radius: 50%;
+    background: var(--pz-red);
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.1s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.pz-option.is-selected .pz-radio {
+    display: grid;
+}
+
+.pz-radio:hover {
+    background: #d8161f;
+}
+
+.pz-radio:active {
+    transform: scale(0.92);
+}
+
+/* Controle de quantidade (item selecionado) */
+.pz-stepper {
+    display: none;
+    align-items: center;
+    height: 36px;
+    padding: 0 3px;
+    border: 1px solid var(--pz-line-strong);
+    border-radius: 999px;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.pz-option.is-selected .pz-stepper {
+    display: flex;
+}
+
+.pz-option.is-selected .pz-plus {
+    display: none;
+}
+
+.pz-step-btn {
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    border: none;
+    background: transparent;
+    color: var(--pz-red);
+    font-size: 18px;
+    line-height: 1;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.pz-step-btn:hover:not(:disabled) {
+    background: #fdecec;
+}
+
+.pz-step-btn:disabled {
+    color: var(--pz-ink-mute);
+    cursor: not-allowed;
+    background: transparent;
+}
+
+.pz-step-value {
+    min-width: 22px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--pz-ink);
+}
+
+/* Observações */
+.pz-notes {
+    padding: 16px;
+    background: var(--pz-band);
+    border-bottom: 1px solid var(--pz-line);
+}
+
+.pz-notes-title {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--pz-ink);
+}
+
+.pz-notes-sub {
+    margin: 4px 0 10px;
+    font-size: 13px;
+    color: var(--pz-ink-soft);
+}
+
+.pz-notes-field {
+    width: 100%;
+    min-height: 84px;
+    padding: 12px 14px;
+    border: 1px solid var(--pz-line-strong);
+    border-radius: 12px;
+    background: #fff;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--pz-ink);
+    resize: vertical;
+    transition: border-color 0.15s ease;
+}
+
+.pz-notes-field:focus {
+    outline: none;
+    border-color: var(--pz-orange);
+}
+
+.pz-notes-field::placeholder {
+    color: var(--pz-ink-mute);
+}
+
+.pz-body-tail {
+    height: 20px;
+    background: #fff;
+}
+
+/* --------------------------------------------------------------------------
+   7. Barra inferior fixa
+   -------------------------------------------------------------------------- */
+
+.pz-footer {
+    flex: 0 0 auto;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+    background: #fff;
+    border-top: 1px solid var(--pz-line);
+    box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.07);
+    z-index: 3;
+}
+
+.pz-hint {
+    margin: 0 0 10px;
+    font-size: 12.5px;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--pz-red);
+}
+
+.pz-hint[hidden] {
+    display: none;
+}
+
+.pz-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.pz-qty {
+    display: flex;
+    align-items: center;
+    flex: none;
+    height: 52px;
+    border: 1px solid var(--pz-line-strong);
+    border-radius: var(--pz-radius);
+    background: #fff;
+}
+
+.pz-qty-btn {
+    width: 44px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    border: none;
+    background: transparent;
+    color: var(--pz-red);
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    border-radius: var(--pz-radius);
+    transition: background 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.pz-qty-btn:hover:not(:disabled) {
+    background: #fdecec;
+}
+
+.pz-qty-btn:disabled {
+    color: var(--pz-ink-mute);
+    cursor: not-allowed;
+    background: transparent;
+}
+
+.pz-qty-value {
+    min-width: 26px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--pz-ink);
+}
+
+.pz-add {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 0 18px;
+    border: none;
+    border-radius: var(--pz-radius);
+    background: var(--pz-red);
+    color: #fff;
+    font-family: inherit;
+    font-size: 15.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.1s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.pz-add:hover:not(:disabled) {
+    background: #d8161f;
+}
+
+.pz-add:active:not(:disabled) {
+    transform: scale(0.99);
+}
+
+.pz-add:disabled {
+    background: #dcdcdc;
+    color: #8f8f8f;
+    cursor: not-allowed;
+}
+
+.pz-add.is-done {
+    background: var(--pz-green);
+}
+
+.pz-add.is-done:hover {
+    background: var(--pz-green);
+}
+
+.pz-add-label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pz-add-total {
+    flex: none;
+    font-variant-numeric: tabular-nums;
+    font-weight: 800;
+}
+
+/* --------------------------------------------------------------------------
+   Estados utilitários
+   -------------------------------------------------------------------------- */
+
+.pz-option img.pz-opt-img {
+    display: block;
+}
+
+@media (max-width: 359px) {
+    .pz-opt-img {
+        width: 48px;
+        height: 48px;
+    }
+
+    .pz-opt-ctrl {
+        width: 80px;
+    }
+
+    .pz-price {
+        font-size: 23px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pz-overlay,
+    .pz-modal,
+    .pz-option,
+    .pz-add {
+        transition: none;
+    }
+}

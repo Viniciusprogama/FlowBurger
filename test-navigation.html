@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Teste de Navegação - Flow Burger</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f8f9fa;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+        }
+        .test-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .test-link {
+            background: #fc6a05;
+            color: white;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .test-link:hover {
+            background: #e55a04;
+            transform: translateY(-2px);
+        }
+        .status {
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-weight: 500;
+        }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .warning { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        h1 { color: #fc6a05; text-align: center; }
+        h2 { color: #333; border-bottom: 2px solid #fc6a05; padding-bottom: 10px; }
+        .responsive-test {
+            border: 2px solid #ddd;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .viewport-sizes {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+        .viewport-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .viewport-btn:hover {
+            background: #0056b3;
+        }
+        @media (max-width: 768px) {
+            .test-links {
+                grid-template-columns: 1fr;
+            }
+            .viewport-sizes {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🍔 Flow Burger - Teste de Navegação</h1>
+        
+        <div class="status success">
+            ✅ Servidor rodando em: http://localhost:8080
+        </div>
+        
+        <div class="test-section">
+            <h2>📱 Teste de Responsividade</h2>
+            <div class="responsive-test">
+                <p><strong>Instruções:</strong> Teste os tamanhos de tela abaixo ou redimensione manualmente a janela do navegador.</p>
+                <div class="viewport-sizes">
+                    <button class="viewport-btn" onclick="setViewport(375, 667)">📱 iPhone (375x667)</button>
+                    <button class="viewport-btn" onclick="setViewport(768, 1024)">📱 Tablet (768x1024)</button>
+                    <button class="viewport-btn" onclick="setViewport(1200, 800)">🖥️ Desktop (1200x800)</button>
+                    <button class="viewport-btn" onclick="setViewport('100%', '100%')">🔄 Restaurar</button>
+                </div>
+                <div class="status info">
+                    <strong>Atual:</strong> <span id="current-size">Detectando...</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🏠 Página Principal</h2>
+            <div class="test-links">
+                <a href="index.html" class="test-link">Página Inicial</a>
+                <a href="cart/index.html" class="test-link">Carrinho</a>
+                <a href="checkout/index.html" class="test-link">Finalizar pedido</a>
+            </div>
+            <div class="status warning">
+                ⚠️ Verifique: contador do carrinho, links dos produtos, responsividade do layout
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🍔 Combos</h2>
+            <div class="test-links">
+                <a href="product/1/index.html" class="test-link">Combo Casal</a>
+                <a href="product/2/index.html" class="test-link">Combo Família</a>
+                <a href="product/3/index.html" class="test-link">Combo Individual</a>
+            </div>
+            <div class="status warning">
+                ⚠️ Teste: seleção obrigatória, complementos opcionais, cálculo de preços, botão adicionar
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🥩 Lanches Individuais</h2>
+            <div class="test-links">
+                <a href="product/4/index.html" class="test-link">Burgão Especial</a>
+                <a href="product/5/index.html" class="test-link">Burgão Duplo</a>
+                <a href="product/6/index.html" class="test-link">Burgão Triplo</a>
+            </div>
+            <div class="status warning">
+                ⚠️ Teste: ponto da carne, complementos, navegação entre produtos relacionados
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>✅ Checklist de Testes</h2>
+            <div style="text-align: left;">
+                <label><input type="checkbox"> Layout responsivo em mobile (< 768px)</label><br>
+                <label><input type="checkbox"> Layout responsivo em tablet (768px - 1024px)</label><br>
+                <label><input type="checkbox"> Layout responsivo em desktop (> 1024px)</label><br>
+                <label><input type="checkbox"> Navegação entre páginas funciona</label><br>
+                <label><input type="checkbox"> Botão "voltar" funciona em todas as páginas de produto</label><br>
+                <label><input type="checkbox"> Seleção de opções obrigatórias funciona</label><br>
+                <label><input type="checkbox"> Complementos podem ser adicionados/removidos</label><br>
+                <label><input type="checkbox"> Preço total é calculado automaticamente</label><br>
+                <label><input type="checkbox"> Campo de observações aceita texto</label><br>
+                <label><input type="checkbox"> Botão "Adicionar ao Pedido" funciona</label><br>
+                <label><input type="checkbox"> Contador do carrinho é atualizado</label><br>
+                <label><input type="checkbox"> Página do carrinho mostra itens adicionados</label><br>
+                <label><input type="checkbox"> Controles de quantidade no carrinho funcionam</label><br>
+                <label><input type="checkbox"> Remoção de itens do carrinho funciona</label><br>
+                <label><input type="checkbox"> Produtos relacionados levam às páginas corretas</label><br>
+                <label><input type="checkbox"> Imagens carregam corretamente</label><br>
+                <label><input type="checkbox"> Estilos CSS aplicados corretamente</label><br>
+                <label><input type="checkbox"> JavaScript funciona sem erros no console</label><br>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🔧 Informações Técnicas</h2>
+            <div class="status info">
+                <strong>Estrutura criada:</strong><br>
+                • 6 páginas de produtos funcionais (/product/1-6/)<br>
+                • Página do carrinho (/cart/)<br>
+                • JavaScript global para interatividade<br>
+                • CSS responsivo com breakpoints mobile/tablet/desktop<br>
+                • LocalStorage para persistência do carrinho<br>
+                • Identidade visual consistente com Flow Burger
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Detectar tamanho atual da tela
+        function updateCurrentSize() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            let device = '';
+            
+            if (width < 768) {
+                device = '📱 Mobile';
+            } else if (width < 1024) {
+                device = '📱 Tablet';
+            } else {
+                device = '🖥️ Desktop';
+            }
+            
+            document.getElementById('current-size').textContent = `${width}x${height} (${device})`;
+        }
+
+        // Simular diferentes tamanhos de viewport
+        function setViewport(width, height) {
+            if (width === '100%') {
+                // Restaurar tamanho normal
+                document.body.style.width = '';
+                document.body.style.height = '';
+                document.body.style.margin = '';
+                document.body.style.border = '';
+                updateCurrentSize();
+                return;
+            }
+            
+            // Aplicar tamanho específico
+            document.body.style.width = width + 'px';
+            document.body.style.height = height + 'px';
+            document.body.style.margin = '0 auto';
+            document.body.style.border = '2px solid #fc6a05';
+            
+            setTimeout(updateCurrentSize, 100);
+        }
+
+        // Atualizar tamanho no redimensionamento
+        window.addEventListener('resize', updateCurrentSize);
+        
+        // Inicializar
+        updateCurrentSize();
+
+        // Auto-marcar checkboxes quando clicados
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    this.parentNode.style.color = '#28a745';
+                    this.parentNode.style.fontWeight = 'bold';
+                } else {
+                    this.parentNode.style.color = '';
+                    this.parentNode.style.fontWeight = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="pt-br" translate="no">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#ef1d2c">
+    <link rel="shortcut icon" type="image/jpg" href="https://i.postimg.cc/T3hr6XvR/logo.webp">
+    <title>Finalizar pedido - Flow Burger</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/checkout.css">
+</head>
+<body>
+    <header class="co-topbar">
+        <div class="co-wrap co-topbar-inner">
+            <a class="co-brand" href="../index.html">
+                <img src="../imgs/wY9dhnl7Yt0sI8zHRElZaI_1791508437930_na1fn_L2hvbWUvdWJ1bnR1L2Zsb3dfYnVyZ3Vlcl9wcm9maWxlX3Yy.webp" alt="Logotipo da Flow Burger">
+                <span>
+                    <b>Flow Burger</b>
+                    <small>Hamburgueria</small>
+                </span>
+            </a>
+            <nav class="co-nav" aria-label="Navegação principal">
+                <a class="co-nav-link" href="../index.html"><i class="fa-solid fa-book-open"></i> Cardápio</a>
+                <a class="co-nav-link is-outline" href="../cart/index.html"><i class="fa-solid fa-cart-shopping"></i> Carrinho <span class="cart-counter"></span></a>
+                <a class="co-nav-link is-back" href="../index.html"><i class="fa-solid fa-arrow-left"></i> <span>Voltar para o cardápio</span></a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="co-hero">
+        <div class="co-wrap co-hero-inner">
+            <h1>Finalizar pedido</h1>
+            <p>Revise seu pedido e informe os dados para continuar.</p>
+        </div>
+    </section>
+
+    <div class="co-steps-wrap">
+        <nav class="co-wrap" aria-label="Etapas do pedido">
+            <ol class="co-steps" id="co-steps">
+                <li class="co-step is-done" data-step="cardapio">
+                    <a class="co-step-link" href="../index.html">
+                        <span class="co-step-dot"><span class="co-step-num">1</span><i class="fa-solid fa-check co-step-check"></i></span>
+                        <span class="co-step-label">Cardápio</span>
+                    </a>
+                </li>
+                <li class="co-step" data-step="carrinho">
+                    <a class="co-step-link" href="../cart/index.html">
+                        <span class="co-step-dot"><span class="co-step-num">2</span><i class="fa-solid fa-check co-step-check"></i></span>
+                        <span class="co-step-label">Carrinho</span>
+                    </a>
+                </li>
+                <li class="co-step is-current" data-step="identificacao">
+                    <span class="co-step-static">
+                        <span class="co-step-dot"><span class="co-step-num">3</span><i class="fa-solid fa-check co-step-check"></i></span>
+                        <span class="co-step-label">Identificação</span>
+                    </span>
+                </li>
+                <li class="co-step" data-step="endereco">
+                    <span class="co-step-static">
+                        <span class="co-step-dot"><span class="co-step-num">4</span><i class="fa-solid fa-check co-step-check"></i></span>
+                        <span class="co-step-label">Endereço</span>
+                    </span>
+                </li>
+                <li class="co-step" data-step="entrega">
+                    <span class="co-step-static">
+                        <span class="co-step-dot"><span class="co-step-num">5</span><i class="fa-solid fa-check co-step-check"></i></span>
+                        <span class="co-step-label">Entrega</span>
+                    </span>
+                </li>
+                <li class="co-step" data-step="pix">
+                    <span class="co-step-static">
+                        <span class="co-step-dot"><span class="co-step-num">6</span><i class="fa-solid fa-check co-step-check"></i></span>
+                        <span class="co-step-label">Pix</span>
+                    </span>
+                </li>
+            </ol>
+        </nav>
+    </div>
+
+    <main class="co-main-area">
+        <div class="co-wrap">
+            <section class="co-card co-empty" id="co-empty" hidden>
+                <div class="co-empty-icon"><i class="fa-solid fa-basket-shopping"></i></div>
+                <h2>Seu pedido está vazio</h2>
+                <p>Adicione pelo menos um produto ao pedido. Que tal escolher um delicioso burgão no cardápio?</p>
+                <a class="co-cta" href="../index.html"><i class="fa-solid fa-arrow-left"></i> Ver cardápio</a>
+            </section>
+
+            <form id="co-form" novalidate>
+                <div class="co-grid" id="co-grid">
+                    <div class="co-col co-main">
+                        <div class="co-errors" id="co-errors" role="alert" hidden>
+                            <b><i class="fa-solid fa-circle-exclamation"></i> Confira os dados antes de continuar.</b>
+                            <ul id="co-errors-list"></ul>
+                        </div>
+
+                        <section class="co-card" aria-labelledby="co-title-dados">
+                            <div class="co-sec-head">
+                                <span class="co-sec-icon"><i class="fa-solid fa-user"></i></span>
+                                <h2 id="co-title-dados">Seus dados</h2>
+                            </div>
+                            <p class="co-sec-sub">Precisamos dos seus dados para confirmar o pedido.</p>
+                            <div class="co-fields">
+                                <div class="co-field span-6" id="fw-nome">
+                                    <label for="co-nome">Nome completo<span class="co-req">*</span></label>
+                                    <input type="text" id="co-nome" name="nome" autocomplete="name" placeholder="Ex.: Maria Silva" required>
+                                    <span class="co-field-error" id="err-nome" hidden></span>
+                                </div>
+                                <div class="co-field span-6" id="fw-telefone">
+                                    <label for="co-telefone">Telefone / WhatsApp<span class="co-req">*</span></label>
+                                    <input type="tel" id="co-telefone" name="telefone" autocomplete="tel" inputmode="numeric" placeholder="(00) 00000-0000" required>
+                                    <span class="co-field-error" id="err-telefone" hidden></span>
+                                </div>
+                                <div class="co-field" id="fw-email">
+                                    <label for="co-email">E-mail <span class="co-opt">(opcional)</span></label>
+                                    <input type="email" id="co-email" name="email" autocomplete="email" placeholder="voce@email.com">
+                                    <span class="co-hint">Preencha apenas se quiser receber a confirmação por e-mail.</span>
+                                    <span class="co-field-error" id="err-email" hidden></span>
+                                </div>
+                                <div class="co-field" id="fw-documento">
+                                    <label for="co-documento">CPF ou CNPJ <span class="co-opt">(opcional)</span></label>
+                                    <input type="text" id="co-documento" name="documento" inputmode="numeric" autocomplete="off" placeholder="000.000.000-00">
+                                    <span class="co-hint">Usado apenas no comprovante Pix. Preencha se o pagamento for em nome de outra pessoa ou empresa.</span>
+                                    <span class="co-field-error" id="err-documento" hidden></span>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="co-card" aria-labelledby="co-title-receber">
+                            <div class="co-sec-head">
+                                <span class="co-sec-icon"><i class="fa-solid fa-truck-fast"></i></span>
+                                <h2 id="co-title-receber">Como você deseja receber seu pedido?</h2>
+                            </div>
+                            <p class="co-sec-sub">Escolha entre entrega em domicílio ou retirada no local.</p>
+                            <div class="co-choices" role="radiogroup" aria-label="Forma de entrega">
+                                <label class="co-choice" id="choice-entrega">
+                                    <input type="radio" name="co-delivery" value="entrega">
+                                    <span class="co-choice-icon"><i class="fa-solid fa-motorcycle"></i></span>
+                                    <span class="co-choice-body">
+                                        <b>Entrega em domicílio</b>
+                                        <small>Receba o pedido no seu endereço</small>
+                                        <em>Entrega grátis para Serra Talhada e região</em>
+                                    </span>
+                                    <span class="co-choice-fee">Grátis</span>
+                                    <span class="co-choice-check"><i class="fa-solid fa-check"></i></span>
+                                </label>
+                                <label class="co-choice" id="choice-retirada">
+                                    <input type="radio" name="co-delivery" value="retirada">
+                                    <span class="co-choice-icon"><i class="fa-solid fa-store"></i></span>
+                                    <span class="co-choice-body">
+                                        <b>Retirada no local</b>
+                                        <small>Retire você mesmo o pedido</small>
+                                    </span>
+                                    <span class="co-choice-fee">Sem taxa</span>
+                                    <span class="co-choice-check"><i class="fa-solid fa-check"></i></span>
+                                </label>
+                            </div>
+                            <p class="co-field-error" id="err-delivery" hidden style="margin-top: 10px;"></p>
+                        </section>
+
+                        <section class="co-card" aria-labelledby="co-title-endereco" id="co-section-endereco">
+                            <div class="co-sec-head">
+                                <span class="co-sec-icon"><i class="fa-solid fa-location-dot"></i></span>
+                                <h2 id="co-title-endereco">Endereço do pedido</h2>
+                            </div>
+                            <p class="co-sec-sub">Informe onde você deseja receber o pedido.</p>
+
+                            <div id="co-address-hint" class="co-note is-neutral">
+                                <i class="fa-solid fa-hand-point-up"></i>
+                                <span>Escolha acima como você deseja receber o pedido para preencher o endereço.</span>
+                            </div>
+
+                            <div id="co-pickup-note" class="co-note" hidden>
+                                <i class="fa-solid fa-store"></i>
+                                <span><b>Retirada no local:</b> você retirará o pedido diretamente na loja. Não há taxa de entrega.</span>
+                            </div>
+
+                            <div class="co-fields" id="co-address-body" hidden>
+                                <div class="co-field span-4" id="fw-cep">
+                                    <label for="co-cep">CEP<span class="co-req">*</span></label>
+                                    <input type="text" id="co-cep" name="cep" inputmode="numeric" autocomplete="postal-code" placeholder="00000-000" maxlength="9">
+                                    <span class="co-field-error" id="err-cep" hidden></span>
+                                    <span class="co-cep-status" id="co-cep-status" role="status" hidden></span>
+                                </div>
+                                <div class="co-field span-8" id="fw-rua">
+                                    <label for="co-rua">Rua<span class="co-req">*</span></label>
+                                    <input type="text" id="co-rua" name="rua" autocomplete="address-line1" placeholder="Nome da rua">
+                                    <span class="co-field-error" id="err-rua" hidden></span>
+                                </div>
+                                <div class="co-field span-4" id="fw-numero">
+                                    <label for="co-numero">Número<span class="co-req">*</span></label>
+                                    <input type="text" id="co-numero" name="numero" inputmode="numeric" placeholder="123">
+                                    <span class="co-field-error" id="err-numero" hidden></span>
+                                </div>
+                                <div class="co-field span-4" id="fw-complemento">
+                                    <label for="co-complemento">Complemento <span class="co-opt">(opcional)</span></label>
+                                    <input type="text" id="co-complemento" name="complemento" placeholder="Apto, bloco...">
+                                </div>
+                                <div class="co-field span-4" id="fw-bairro">
+                                    <label for="co-bairro">Bairro<span class="co-req">*</span></label>
+                                    <input type="text" id="co-bairro" name="bairro" placeholder="Seu bairro">
+                                    <span class="co-field-error" id="err-bairro" hidden></span>
+                                </div>
+                                <div class="co-field span-4" id="fw-cidade">
+                                    <label for="co-cidade">Cidade<span class="co-req">*</span></label>
+                                    <input type="text" id="co-cidade" name="cidade" autocomplete="address-level2" placeholder="Sua cidade">
+                                    <span class="co-field-error" id="err-cidade" hidden></span>
+                                </div>
+                                <div class="co-field span-4" id="fw-estado">
+                                    <label for="co-estado">Estado<span class="co-req">*</span></label>
+                                    <select id="co-estado" name="estado" autocomplete="address-level1">
+                                        <option value="">Selecione</option>
+                                        <option value="AC">Acre</option>
+                                        <option value="AL">Alagoas</option>
+                                        <option value="AP">Amapá</option>
+                                        <option value="AM">Amazonas</option>
+                                        <option value="BA">Bahia</option>
+                                        <option value="CE">Ceará</option>
+                                        <option value="DF">Distrito Federal</option>
+                                        <option value="ES">Espírito Santo</option>
+                                        <option value="GO">Goiás</option>
+                                        <option value="MA">Maranhão</option>
+                                        <option value="MT">Mato Grosso</option>
+                                        <option value="MS">Mato Grosso do Sul</option>
+                                        <option value="MG">Minas Gerais</option>
+                                        <option value="PA">Pará</option>
+                                        <option value="PB">Paraíba</option>
+                                        <option value="PR">Paraná</option>
+                                        <option value="PE">Pernambuco</option>
+                                        <option value="PI">Piauí</option>
+                                        <option value="RJ">Rio de Janeiro</option>
+                                        <option value="RN">Rio Grande do Norte</option>
+                                        <option value="RS">Rio Grande do Sul</option>
+                                        <option value="RO">Rondônia</option>
+                                        <option value="RR">Roraima</option>
+                                        <option value="SC">Santa Catarina</option>
+                                        <option value="SP">São Paulo</option>
+                                        <option value="SE">Sergipe</option>
+                                        <option value="TO">Tocantins</option>
+                                    </select>
+                                    <span class="co-field-error" id="err-estado" hidden></span>
+                                </div>
+                                <div class="co-field span-4" id="fw-referencia">
+                                    <label for="co-referencia">Ponto de referência <span class="co-opt">(opcional)</span></label>
+                                    <input type="text" id="co-referencia" name="referencia" placeholder="Perto de...">
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="co-card" aria-labelledby="co-title-pagamento">
+                            <div class="co-sec-head">
+                                <span class="co-sec-icon"><i class="fa-solid fa-wallet"></i></span>
+                                <h2 id="co-title-pagamento">Forma de pagamento</h2>
+                            </div>
+                            <p class="co-sec-sub">Este pedido aceita pagamento exclusivamente via Pix.</p>
+
+                            <label class="co-pay" id="co-pay-pix">
+                                <input type="radio" name="co-payment" value="pix" checked>
+                                <span class="co-pay-icon"><i class="fa-brands fa-pix"></i></span>
+                                <span class="co-pay-body">
+                                    <b>Pagamento via Pix</b>
+                                    <small>Pagamento rápido, seguro e com aprovação após a confirmação</small>
+                                </span>
+                                <span class="co-pay-tag">Selecionado</span>
+                                <span class="co-pay-check"><i class="fa-solid fa-circle-check"></i></span>
+                            </label>
+
+                            <div class="co-note is-info" style="margin-top: 14px;">
+                                <i class="fa-solid fa-circle-info"></i>
+                                <span>O pagamento deste pedido será realizado exclusivamente via Pix.</span>
+                            </div>
+
+                            <div class="co-qrsoon">
+                                <i class="fa-solid fa-hourglass-half"></i>
+                                <span>Ao continuar, geramos o QR Code Pix automaticamente.</span>
+                            </div>
+                        </section>
+
+                        <div class="co-privacy-note">
+                            <i class="fa-solid fa-lock"></i>
+                            <span>Seus dados serão utilizados somente para processar e entregar seu pedido. Não solicitamos dados bancários, número de cartão ou outras informações de pagamento nesta etapa.</span>
+                        </div>
+
+                        <div class="co-legal">
+                            <details id="termos">
+                                <summary>Termos de uso</summary>
+                                <p>Ao finalizar o pedido, você confirma que os dados informados estão corretos e concorda com os termos de uso do cardápio digital da Flow Burger. O pedido é registrado assim que você avança para a etapa de pagamento e somente é produzido após a confirmação do pagamento via Pix.</p>
+                            </details>
+                            <details id="privacidade">
+                                <summary>Política de privacidade</summary>
+                                <p>Seus dados pessoais são utilizados somente para processar e entregar o pedido. Não compartilhamos suas informações com terceiros, exceto quando necessário para a entrega. Não solicitamos dados bancários, número de cartão ou informações de pagamento nesta etapa: o pagamento é feito exclusivamente via Pix.</p>
+                            </details>
+                        </div>
+                    </div>
+
+                    <aside class="co-col co-side" aria-label="Resumo do pedido">
+                        <section class="co-card">
+                            <div class="co-sum-head">
+                                <h2><i class="fa-solid fa-receipt"></i> Resumo do pedido</h2>
+                                <span class="co-sum-count" id="co-count">0 itens</span>
+                            </div>
+
+                            <div class="co-items" id="co-items"></div>
+
+                            <a class="co-addmore" href="../index.html">
+                                <i class="fa-solid fa-plus"></i> Adicionar mais produtos
+                            </a>
+
+                            <div class="co-totals">
+                                <div class="co-trow">
+                                    <span>Subtotal</span>
+                                    <span id="co-subtotal">R$ 0,00</span>
+                                </div>
+                                <div class="co-trow is-free" id="co-feerow">
+                                    <span>Taxa de entrega</span>
+                                    <span id="co-fee">Grátis</span>
+                                </div>
+                                <div class="co-trow is-discount" id="co-discountrow" hidden>
+                                    <span>Desconto</span>
+                                    <span id="co-discount">- R$ 0,00</span>
+                                </div>
+                                <div class="co-grand">
+                                    <span>Total</span>
+                                    <strong id="co-total">R$ 0,00</strong>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="co-cta" id="co-submit">
+                                Continuar para pagamento Pix <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                            <p class="co-cta-note">O QR Code Pix é gerado automaticamente. Você ainda poderá revisar os dados.</p>
+                            <p class="co-secure"><i class="fa-solid fa-shield-halved"></i> Ambiente seguro · Seus dados ficam apenas no seu dispositivo</p>
+                        </section>
+                    </aside>
+                </div>
+            </form>
+
+            <section class="co-card co-next" id="co-next" hidden>
+                <div class="co-next-icon"><i class="fa-solid fa-check"></i></div>
+                <h2>Dados confirmados!</h2>
+                <p>Seu pedido está pronto para a próxima etapa. O QR Code Pix será disponibilizado na próxima etapa.</p>
+                <div class="co-next-data">
+                    <div class="co-trow"><span>Cliente</span><span id="co-next-nome">-</span></div>
+                    <div class="co-trow"><span>Telefone</span><span id="co-next-telefone">-</span></div>
+                    <div class="co-trow"><span>Forma de recebimento</span><span id="co-next-entrega">-</span></div>
+                    <div class="co-trow" id="co-next-endereco-row" hidden><span>Endereço</span><span id="co-next-endereco">-</span></div>
+                    <div class="co-trow"><span>Pagamento</span><span>Pix</span></div>
+                    <div class="co-next-total"><span>Total do pedido</span><strong id="co-next-total">R$ 0,00</strong></div>
+                </div>
+                <div class="co-next-actions">
+                    <button type="button" class="co-btn-solid" id="co-generate-pix"><i class="fa-brands fa-pix"></i> Gerar pagamento Pix</button>
+                    <button type="button" class="co-btn-ghost" id="co-review"><i class="fa-solid fa-pen"></i> Revisar dados</button>
+                    <a class="co-btn-ghost" href="../index.html"><i class="fa-solid fa-arrow-left"></i> Voltar para o cardápio</a>
+                </div>
+            </section>
+
+            <section class="co-card co-payment" id="co-payment" hidden aria-labelledby="co-title-pix">
+                <div class="co-pay-head">
+                    <span class="co-sec-icon"><i class="fa-brands fa-pix"></i></span>
+                    <h2 id="co-title-pix">Pague com Pix</h2>
+                    <span class="co-pay-badge is-wait" id="co-pay-status">Aguardando pagamento</span>
+                </div>
+
+                <p class="co-sec-sub">
+                    Pedido <b id="co-pay-order">#0</b> · Total <strong id="co-pay-valor">R$ 0,00</strong>
+                </p>
+
+                <div class="co-pay-loading" id="co-pay-loading">
+                    <span class="co-pay-spinner"></span>
+                    <span>Gerando seu QR Code Pix…</span>
+                </div>
+
+                <div class="co-pay-grid" id="co-pay-body" hidden>
+                    <div class="co-pay-qr" id="co-pay-qr-wrap" hidden>
+                        <div class="co-pay-qr-box" id="co-pay-qr-box"></div>
+                        <p class="co-pay-qr-note">Aponte a câmera do seu banco para o código.</p>
+                    </div>
+                    <div class="co-pay-code">
+                        <label for="co-pay-code">Pix Copia e Cola</label>
+                        <textarea id="co-pay-code" rows="4" readonly spellcheck="false" placeholder="Gerando código…"></textarea>
+                        <div class="co-pay-code-actions">
+                            <button type="button" class="co-btn-solid" id="co-pay-copy"><i class="fa-regular fa-copy"></i> Copiar código</button>
+                            <span class="co-pay-copied" id="co-pay-copied" hidden><i class="fa-solid fa-check"></i> Copiado!</span>
+                        </div>
+                        <p class="co-pay-qr-note" id="co-pay-qr-fallback" hidden>Não foi possível gerar a imagem do QR Code aqui. Use o código Copia e Cola acima no seu banco.</p>
+                    </div>
+                </div>
+
+                <div class="co-pay-statusbar" id="co-pay-statusbar" hidden>
+                    <p class="co-pay-msg" id="co-pay-msg">Após o pagamento, estamos aguardando a confirmação.</p>
+                    <div class="co-pay-statusrow">
+                        <span class="co-pay-indicator" id="co-pay-indicator" aria-hidden="true"></span>
+                        <span class="co-pay-expiry" id="co-pay-expiry"></span>
+                        <button type="button" class="co-btn-ghost" id="co-pay-refresh"><i class="fa-solid fa-rotate"></i> Verificar status</button>
+                    </div>
+                </div>
+
+                <div class="co-pay-upsell" id="co-pay-upsell" hidden>
+                    <p>Compra não concluída. Tente novamente.</p>
+                </div>
+
+                <div class="co-pay-error" id="co-pay-error" hidden>
+                    <b id="co-pay-error-title"><i class="fa-solid fa-triangle-exclamation"></i> <span>Não foi possível concluir</span></b>
+                    <p id="co-pay-error-msg">Tente novamente em instantes.</p>
+                    <div class="co-pay-error-actions">
+                        <button type="button" class="co-btn-solid" id="co-pay-retry">Gerar novo código</button>
+                        <button type="button" class="co-btn-ghost" id="co-pay-error-back"><i class="fa-solid fa-arrow-left"></i> Voltar e revisar</button>
+                    </div>
+                </div>
+
+                <div class="co-pay-success" id="co-pay-success" hidden>
+                    <div class="co-pay-success-icon"><i class="fa-solid fa-check"></i></div>
+                    <h3>Pagamento confirmado</h3>
+                    <p>Pedido <b id="co-pay-success-order">#0</b> recebido! Já estamos preparando tudo para você.</p>
+                    <div class="co-next-data">
+                        <div class="co-trow"><span>Cliente</span><span id="co-pay-success-cliente">-</span></div>
+                        <div class="co-trow"><span>Recebimento</span><span id="co-pay-success-entrega">-</span></div>
+                        <div class="co-trow" id="co-pay-success-endereco-row" hidden><span>Endereço</span><span id="co-pay-success-endereco">-</span></div>
+                        <div class="co-trow"><span>Previsão de preparo</span><span id="co-pay-success-preparo">-</span></div>
+                        <div class="co-trow"><span>Itens</span><span id="co-pay-success-itens">-</span></div>
+                        <div class="co-next-total"><span>Total pago</span><strong id="co-pay-success-total">R$ 0,00</strong></div>
+                    </div>
+                    <div class="co-next-actions">
+                        <a class="co-btn-solid" href="../index.html"><i class="fa-solid fa-house"></i> Voltar ao cardápio</a>
+                    </div>
+                </div>
+
+                <div class="co-pay-actions" id="co-pay-actions">
+                    <button type="button" class="co-btn-ghost" id="co-pay-back"><i class="fa-solid fa-arrow-left"></i> Voltar e revisar</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div class="co-mobilebar" id="co-mobilebar">
+        <div class="co-mb-total">
+            <small>Total</small>
+            <strong id="co-mtotal">R$ 0,00</strong>
+        </div>
+        <button type="button" class="co-cta" id="co-msubmit">Continuar para pagamento Pix</button>
+    </div>
+
+    <footer class="co-footer">
+        <div class="co-wrap co-footer-inner">
+            <div class="co-foot-brand">
+                <img src="../imgs/wY9dhnl7Yt0sI8zHRElZaI_1791508437930_na1fn_L2hvbWUvdWJ1bnR1L2Zsb3dfYnVyZ3Vlcl9wcm9maWxlX3Yy.webp" alt="Flow Burger">
+                <span>
+                    <b>Flow Burger</b>
+                    <span>Entrega grátis em Serra Talhada e região.</span>
+                </span>
+            </div>
+            <nav class="co-foot-links" aria-label="Links do rodapé">
+                <a href="../index.html">Cardápio</a>
+                <a href="../cart/index.html">Carrinho</a>
+                <a href="#termos">Termos de uso</a>
+                <a href="#privacidade">Política de privacidade</a>
+            </nav>
+            <span class="co-foot-small">© Flow Burger · Cardápio digital</span>
+        </div>
+    </footer>
+
+    <script src="../js/global.js"></script>
+    <script src="../js/api-config.js"></script>
+    <script src="../js/checkout.js"></script>
+</body>
+</html>

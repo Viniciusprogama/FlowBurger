@@ -1,0 +1,297 @@
+{
+  "generatedAt": "2026-10-07T03:08:01.556Z",
+  "source": [
+    "index.html",
+    "js/modal-personalizacao.js"
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "Combo Casal - 2 Burgões + Batata Especial 500g",
+      "price": 32.9
+    },
+    {
+      "id": 2,
+      "name": "Combo Família: 4 Burgões + 2 porções de Batata Especial 500g",
+      "price": 49.9
+    },
+    {
+      "id": 3,
+      "name": "Burgão, Batata Frita 250g e Refrigerante 350ml",
+      "price": 19.9
+    },
+    {
+      "id": 4,
+      "name": "Burgão Especial",
+      "price": 15.9
+    },
+    {
+      "id": 5,
+      "name": "Burgão Duplo",
+      "price": 15.9
+    },
+    {
+      "id": 6,
+      "name": "Burgão Triplo",
+      "price": 27.89
+    },
+    {
+      "id": 7,
+      "name": "Burgão salada",
+      "price": 17
+    },
+    {
+      "id": 8,
+      "name": "Burgão Caramelizado",
+      "price": 20
+    },
+    {
+      "id": 9,
+      "name": "Burguer cheddar bacon",
+      "price": 19
+    },
+    {
+      "id": 10,
+      "name": "Duplo cheddar - hambúrguer",
+      "price": 24
+    }
+  ],
+  "options": [
+    {
+      "name": "Abacate",
+      "prices": [
+        5
+      ]
+    },
+    {
+      "name": "Ao ponto",
+      "prices": [
+        0
+      ]
+    },
+    {
+      "name": "Bacon crocante",
+      "prices": [
+        5
+      ]
+    },
+    {
+      "name": "Bacon extra",
+      "prices": [
+        5,
+        8
+      ]
+    },
+    {
+      "name": "Barbecue artesanal",
+      "prices": [
+        0
+      ]
+    },
+    {
+      "name": "Batata cheddar e bacon",
+      "prices": [
+        12
+      ]
+    },
+    {
+      "name": "Batata extra 250g",
+      "prices": [
+        8
+      ]
+    },
+    {
+      "name": "Batata frita 250g",
+      "prices": [
+        8
+      ]
+    },
+    {
+      "name": "Bem passado",
+      "prices": [
+        0
+      ]
+    },
+    {
+      "name": "Carne extra 120g",
+      "prices": [
+        9
+      ]
+    },
+    {
+      "name": "Catupiry",
+      "prices": [
+        4
+      ]
+    },
+    {
+      "name": "Cebola caramelizada",
+      "prices": [
+        4
+      ]
+    },
+    {
+      "name": "Cebola extra caramelizada",
+      "prices": [
+        3
+      ]
+    },
+    {
+      "name": "Cheddar extra",
+      "prices": [
+        4
+      ]
+    },
+    {
+      "name": "Chipotle picante",
+      "prices": [
+        0
+      ]
+    },
+    {
+      "name": "Coca-Cola",
+      "prices": [
+        0
+      ]
+    },
+    {
+      "name": "Fanta Laranja",
+      "prices": [
+        0
+      ]
+    },
+    {
+      "name": "Frango grelhado",
+      "prices": [
+        8
+      ]
+    },
+    {
+      "name": "Guaraná Antarctica",
+      "prices": [
+        0
+      ]
+    },
+    {
+      "name": "Maionese de alho",
+      "prices": [
+        0
+      ]
+    },
+    {
+      "name": "Mal passado",
+      "prices": [
+        0
+      ]
+    },
+    {
+      "name": "Misto",
+      "prices": [
+        0
+      ]
+    },
+    {
+      "name": "Misto (1 ao ponto + 1 bem passado)",
+      "prices": [
+        0
+      ]
+    },
+    {
+      "name": "Molho barbecue extra",
+      "prices": [
+        2.5
+      ]
+    },
+    {
+      "name": "Molho da casa",
+      "prices": [
+        0
+      ]
+    },
+    {
+      "name": "Onion rings",
+      "prices": [
+        10
+      ]
+    },
+    {
+      "name": "Ovo frito",
+      "prices": [
+        3
+      ]
+    },
+    {
+      "name": "Pimenta jalapeño",
+      "prices": [
+        3
+      ]
+    },
+    {
+      "name": "Porção extra de batata 500g",
+      "prices": [
+        14
+      ]
+    },
+    {
+      "name": "Queijo cheddar extra",
+      "prices": [
+        4,
+        6
+      ]
+    },
+    {
+      "name": "Queijo cottage",
+      "prices": [
+        4.5
+      ]
+    },
+    {
+      "name": "Queijo suíço extra",
+      "prices": [
+        4.5
+      ]
+    },
+    {
+      "name": "Refrigerante 2L",
+      "prices": [
+        9
+      ]
+    },
+    {
+      "name": "Sobremesa",
+      "prices": [
+        14
+      ]
+    },
+    {
+      "name": "Sprite",
+      "prices": [
+        0
+      ]
+    },
+    {
+      "name": "Todos ao ponto",
+      "prices": [
+        0
+      ]
+    },
+    {
+      "name": "Todos bem passados",
+      "prices": [
+        0
+      ]
+    },
+    {
+      "name": "Todos mal passados",
+      "prices": [
+        0
+      ]
+    },
+    {
+      "name": "Tomate confitado",
+      "prices": [
+        3.5
+      ]
+    }
+  ]
+}
