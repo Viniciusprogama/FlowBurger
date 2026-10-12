@@ -265,7 +265,7 @@ async function handleApi(req, res, ctx) {
   if (method === 'POST' && pathname === '/api/webhooks/veopag/deposit') {
     enforce(limiters.webhook, 'webhook:' + ip, 'Muitos webhooks. Tente novamente em instantes.');
     const raw = await readBody(req, config.server.bodyLimitBytes);
-    const result = webhook.handleWebhook(
+    const result = await webhook.handleWebhook(
       { db: db, logger: logger },
       { rawBody: raw.toString('utf8'), headers: req.headers }
     );
@@ -300,7 +300,7 @@ async function handleApi(req, res, ctx) {
 
   if (orderRoute && method === 'GET' && orderRoute.route === 'order') {
     enforce(limiters.orderView, ip, null);
-    const order = orders.getOrder(deps, orderRoute.id);
+    const order = await orders.getOrder(deps, orderRoute.id);
     sendJson(res, 200, { order: orders.getView(db, order) });
     return;
   }
@@ -309,7 +309,7 @@ async function handleApi(req, res, ctx) {
     checkAdmin(req);
     const body = await readJson(req, 8 * 1024);
     const target = String((body.json && body.json.status) || '').toUpperCase();
-    const order = orders.getOrder(deps, orderRoute.id);
+    const order = await orders.getOrder(deps, orderRoute.id);
 
     if (!orderStatus.STATUS[target]) {
       throw new ApiError(422, 'Status desconhecido: ' + target, 'INVALID_STATUS');
@@ -323,11 +323,11 @@ async function handleApi(req, res, ctx) {
       );
     }
 
-    db.updateOrder(order.id, { status: target, updated_at: db.now() });
-    db.audit(order.id, 'status_manual', order.status + ' -> ' + target);
+    await db.updateOrder(order.id, { status: target, updated_at: db.now() });
+    await db.audit(order.id, 'status_manual', order.status + ' -> ' + target);
     logger.info('pedido ' + order.id + ': ' + order.status + ' -> ' + target);
 
-    const updated = db.getOrderById(order.id);
+    const updated = await db.getOrderById(order.id);
     sendJson(res, 200, { order: orders.getView(db, updated) });
     return;
   }
@@ -337,8 +337,8 @@ async function handleApi(req, res, ctx) {
     const limit = Number(urlSearch(req, 'limit')) || 50;
     const statusFilter = urlSearch(req, 'status');
     const rows = statusFilter
-      ? db.listOrdersByStatus(statusFilter, limit)
-      : db.listOrders(limit);
+      ? await db.listOrdersByStatus(statusFilter, limit)
+      : await db.listOrders(limit);
     sendJson(res, 200, {
       orders: rows.map((row) => {
         const view = orders.getView(db, row);
@@ -351,7 +351,7 @@ async function handleApi(req, res, ctx) {
 
   if (orderRoute && method === 'GET' && orderRoute.route === 'admin-order') {
     checkAdmin(req);
-    const order = orders.getOrder(deps, orderRoute.id);
+    const order = await orders.getOrder(deps, orderRoute.id);
     const view = orders.getView(db, order);
     view.email = order.customer_email;
     view.externalId = order.external_id;

@@ -12,14 +12,14 @@ async function tick(deps) {
   const results = { checked: 0, expired: 0, failed: 0 };
 
   const now = new Date();
-  const toExpire = db.listExpiredPending(now.toISOString(), 20);
+  const toExpire = await db.listExpiredPending(now.toISOString(), 20);
   for (const order of toExpire) {
-    const res = status.expireOrderIfNeeded(db, order);
+    const res = await status.expireOrderIfNeeded(db, order);
     if (res.changed) results.expired += 1;
   }
 
   const staleMs = config.orders.remoteCheckMinMs;
-  const pending = db.listPendingReconcile(Date.now() - staleMs, 10);
+  const pending = await db.listPendingReconcile(Date.now() - staleMs, 10);
   for (const order of pending) {
     try {
       await orders.refreshFromVeoPag(deps, order);

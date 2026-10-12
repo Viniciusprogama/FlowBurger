@@ -8,38 +8,48 @@ const { createApp } = require('../src/app');
 const reconcile = require('../src/services/reconcile');
 
 let cachedHandler = null;
+let handlerReady = null;
 
 function getHandler() {
-  if (cachedHandler) return cachedHandler;
+  if (cachedHandler) return Promise.resolve(cachedHandler);
+  if (handlerReady) return handlerReady;
 
-  const logger = createLogger(config.log.level);
-  const db = dbModule.getDb();
+  handlerReady = (async () => {
+    const logger = createLogger(config.log.level);
+    const db = dbModule.getDb();
 
-  const veopag = new VeoPagClient({
-    baseUrl: config.veopag.baseUrl,
-    clientId: config.veopag.clientId,
-    clientSecret: config.veopag.clientSecret,
-    callbackUrl: config.veopag.callbackUrl,
-    timeoutMs: config.veopag.timeoutMs,
-    tokenTtlMs: config.veopag.tokenTtlMs,
-    logger: logger
-  });
+    if (typeof db.init === 'function') {
+      await db.init();
+    }
 
-  const deps = { db: db, veopag: veopag, logger: logger, config: config };
+    const veopag = new VeoPagClient({
+      baseUrl: config.veopag.baseUrl,
+      clientId: config.veopag.clientId,
+      clientSecret: config.veopag.clientSecret,
+      callbackUrl: config.veopag.callbackUrl,
+      timeoutMs: config.veopag.timeoutMs,
+      tokenTtlMs: config.veopag.tokenTtlMs,
+      logger: logger
+    });
 
-  try {
-    reconcile.start(deps, { intervalMs: 60000 });
-  } catch (e) {
-    logger.warn('reconcile nao iniciado: ' + e.message);
-  }
+    const deps = { db: db, veopag: veopag, logger: logger, config: config };
 
-  cachedHandler = createApp(deps);
-  return cachedHandler;
+    try {
+      reconcile.start(deps, { intervalMs: 60000 });
+    } catch (e) {
+      logger.warn('reconcile nao iniciado: ' + e.message);
+    }
+
+    cachedHandler = createApp(deps);
+    return cachedHandler;
+  })();
+
+  return handlerReady;
 }
 
 module.exports = async function handler(req, res) {
   try {
-    const h = getHandler();
+    const h = await getHandler();
     await h(req, res);
   } catch (err) {
     console.error('[api] error:', err);

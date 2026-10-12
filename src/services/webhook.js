@@ -90,7 +90,7 @@ function payloadToEvent(payload, source) {
 
 // Processa o POST bruto do webhook. Sempre responde rapido (2xx quando valido),
 // deixando a aplicacao de status sincrona (SQLite local).
-function handleWebhook(deps, params) {
+async function handleWebhook(deps, params) {
   const { db, logger } = deps;
   const rawBody = params.rawBody || '';
   const headers = params.headers || {};
@@ -104,7 +104,7 @@ function handleWebhook(deps, params) {
   const signatureCheck = verifySignature(rawBody, headers, params);
   if (!signatureCheck.ok) {
     logger.error('webhook assinatura rejeitada: ' + signatureCheck.reason);
-    db.audit(null, 'webhook_signature_rejected', signatureCheck.reason);
+    await db.audit(null, 'webhook_signature_rejected', signatureCheck.reason);
     return { status: 401, body: { ok: false, error: 'invalid_signature' }, outcome: 'rejected' };
   }
 
@@ -135,26 +135,26 @@ function handleWebhook(deps, params) {
     status: payload.status
   };
 
-  if (db.getEvent(eventInfo.eventKey)) {
+  if (await db.getEvent(eventInfo.eventKey)) {
     logger.info('webhook duplicado ignorado: ' + eventInfo.eventKey);
     return { status: 200, body: { ok: true, duplicate: true }, outcome: 'duplicate' };
   }
 
-  let order = db.getOrderByExternalId(payload.external_id);
+  let order = await db.getOrderByExternalId(payload.external_id);
   if (!order && payload.transaction_id) {
-    order = db.getOrderByTransactionId(payload.transaction_id);
+    order = await db.getOrderByTransactionId(payload.transaction_id);
   }
 
   if (!order) {
     logger.warn('webhook sem pedido correspondente: external_id=' + payload.external_id);
-    db.recordEvent(eventInfo, 'unknown_order', rawBody);
+    await db.recordEvent(eventInfo, 'unknown_order', rawBody);
     return { status: 200, body: { ok: true, unknownOrder: true }, outcome: 'unknown_order' };
   }
 
   const event = payloadToEvent(payload, 'webhook');
-  const result = status.applyPaymentEvent(db, order, event);
+  const result = await status.applyPaymentEvent(db, order, event);
   const outcome = result.changed ? 'processed' : 'ignored_' + result.reason;
-  db.recordEvent(eventInfo, outcome, rawBody);
+  await db.recordEvent(eventInfo, outcome, rawBody);
 
   logger.info(
     'webhook ' + payload.status + ' para ' + order.id + ' -> ' +

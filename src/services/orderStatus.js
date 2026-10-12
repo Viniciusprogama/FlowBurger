@@ -77,21 +77,21 @@ function isOrderExpired(order) {
 
 // Aplica um evento de pagamento (webhook ou consulta). Nunca regride de PAID.
 // Retorna { changed, reason }.
-function applyPaymentEvent(db, order, event) {
+async function applyPaymentEvent(db, order, event) {
   if (!order) return { changed: false, reason: 'order_not_found' };
   if (event.currency && event.currency !== 'BRL') {
-    db.audit(order.id, 'payment_ignored_currency', event.currency);
+    await db.audit(order.id, 'payment_ignored_currency', event.currency);
     return { changed: false, reason: 'currency' };
   }
 
   const mapped = mapDepositStatus(event.status);
   if (!mapped) {
-    db.audit(order.id, 'payment_ignored_status', String(event.status));
+    await db.audit(order.id, 'payment_ignored_status', String(event.status));
     return { changed: false, reason: 'unknown_status' };
   }
 
   if (event.amountCents !== null && event.amountCents !== undefined && event.amountCents !== order.total_cents) {
-    db.audit(
+    await db.audit(
       order.id,
       'payment_amount_mismatch',
       'esperado ' + order.total_cents + ' recebido ' + event.amountCents
@@ -119,7 +119,7 @@ function applyPaymentEvent(db, order, event) {
   } else if (mapped.payment === PAYMENT.FAILED) {
     if (order.status === STATUS.PAID) {
       // pagamento confirmado nunca volta atras
-      db.audit(order.id, 'payment_failed_ignored', 'pedido ja estava pago');
+      await db.audit(order.id, 'payment_failed_ignored', 'pedido ja estava pago');
       return { changed: false, reason: 'already_paid' };
     }
     fields.payment_status = PAYMENT.FAILED;
@@ -138,19 +138,19 @@ function applyPaymentEvent(db, order, event) {
     }
   }
 
-  db.updateOrder(order.id, fields);
-  db.audit(order.id, 'payment_event_' + String(event.status).toUpperCase(), event.source || '');
+  await db.updateOrder(order.id, fields);
+  await db.audit(order.id, 'payment_event_' + String(event.status).toUpperCase(), event.source || '');
   return { changed: true, status: status, payment: fields.payment_status || order.payment_status };
 }
 
-function expireOrderIfNeeded(db, order) {
+async function expireOrderIfNeeded(db, order) {
   if (!isOrderExpired(order)) return { changed: false };
-  db.updateOrder(order.id, {
+  await db.updateOrder(order.id, {
     status: STATUS.EXPIRED,
     payment_status: PAYMENT.EXPIRED,
     updated_at: db.now()
   });
-  db.audit(order.id, 'order_expired', order.expires_at);
+  await db.audit(order.id, 'order_expired', order.expires_at);
   return { changed: true };
 }
 

@@ -17,10 +17,10 @@ function parseOrderId(value) {
   return null;
 }
 
-function findOrder(db, value) {
+async function findOrder(db, value) {
   const parsed = parseOrderId(value);
   if (!parsed) return null;
-  return parsed.type === 'id' ? db.getOrderById(parsed.value) : db.getOrderByNumber(parsed.value);
+  return parsed.type === 'id' ? await db.getOrderById(parsed.value) : await db.getOrderByNumber(parsed.value);
 }
 
 function centsToReais(cents) {
@@ -115,10 +115,10 @@ function depositToEvent(deposit, fallbackExternalId) {
 async function refreshFromVeoPag(deps, order) {
   const deposit = await deps.veopag.getDepositBy({ external_id: order.external_id });
   if (deposit) {
-    status.applyPaymentEvent(deps.db, order, depositToEvent(deposit, order.external_id));
+    await status.applyPaymentEvent(deps.db, order, depositToEvent(deposit, order.external_id));
   }
-  deps.db.updateOrder(order.id, { last_remote_check: Date.now(), updated_at: deps.db.now() });
-  return deps.db.getOrderById(order.id);
+  await deps.db.updateOrder(order.id, { last_remote_check: Date.now(), updated_at: deps.db.now() });
+  return await deps.db.getOrderById(order.id);
 }
 
 async function chargeOrder(deps, order) {
@@ -136,7 +136,7 @@ async function chargeOrder(deps, order) {
     });
 
     const now = db.now();
-    db.updateOrder(order.id, {
+    await db.updateOrder(order.id, {
       status: status.STATUS.PIX_GENERATED,
       payment_status: status.PAYMENT.PENDING,
       pix_code: result.pixCode || null,
@@ -144,17 +144,17 @@ async function chargeOrder(deps, order) {
       error_message: null,
       updated_at: now
     });
-    db.audit(order.id, 'pix_generated', 'transaction=' + (result.transactionId || '-'));
-    return db.getOrderById(order.id);
+    await db.audit(order.id, 'pix_generated', 'transaction=' + (result.transactionId || '-'));
+    return await db.getOrderById(order.id);
   } catch (err) {
     const friendly = friendlyVeopagMessage(err);
-    db.updateOrder(order.id, {
+    await db.updateOrder(order.id, {
       status: status.STATUS.PAYMENT_FAILED,
       payment_status: status.PAYMENT.FAILED,
       error_message: friendly,
       updated_at: db.now()
     });
-    db.audit(order.id, 'pix_generation_failed', (err && err.message) || 'erro desconhecido');
+    await db.audit(order.id, 'pix_generation_failed', (err && err.message) || 'erro desconhecido');
     deps.logger.error('veopag createDeposit falhou para ' + order.id + ': ' + ((err && err.message) || err));
     throw new ApiError(502, friendly, 'PAYMENT_GATEWAY_ERROR');
   }
@@ -177,7 +177,7 @@ async function createOrder(deps, body) {
 
   // idempotencia do frontend: mesmo clientRequestId devolve o mesmo pedido
   if (normalized.clientRequestId) {
-    const existing = db.getOrderByClientRequestId(normalized.clientRequestId);
+    const existing = await db.getOrderByClientRequestId(normalized.clientRequestId);
     if (existing) {
       if (
         existing.status === status.STATUS.PAYMENT_FAILED ||
@@ -197,7 +197,7 @@ async function createOrder(deps, body) {
   const id = newOrderId();
   const expiresAt = new Date(Date.now() + config.orders.expiryMinutes * 60000).toISOString();
 
-  const order = db.insertOrder({
+  const order = await db.insertOrder({
     id: id,
     order_number: 0,
     external_id: 'flowburguer-order-' + id,
@@ -220,8 +220,8 @@ async function createOrder(deps, body) {
   });
 
   // order_number acompanha o autoincremento (seq)
-  db.updateOrder(order.id, { order_number: order.seq, updated_at: db.now() });
-  db.audit(order.id, 'order_created', 'total=' + normalized.totalCents);
+  await db.updateOrder(order.id, { order_number: order.seq, updated_at: db.now() });
+  await db.audit(order.id, 'order_created', 'total=' + normalized.totalCents);
 
   logger.info(
     'pedido criado ' + order.id + ' (#' + order.order_number + ') total R$ ' +
@@ -235,11 +235,11 @@ async function createOrder(deps, body) {
 async function getPaymentStatus(deps, orderId, options) {
   const opts = options || {};
   const db = deps.db;
-  let order = findOrder(db, orderId);
+  let order = await findOrder(db, orderId);
   if (!order) throw new ApiError(404, 'Pedido nao encontrado', 'NOT_FOUND');
 
-  const expired = status.expireOrderIfNeeded(db, order);
-  if (expired.changed) order = db.getOrderById(order.id);
+  const expired = await status.expireOrderIfNeeded(db, order);
+  if (expired.changed) order = await db.getOrderById(order.id);
 
   const pending = !status.isPaymentFinal(order.payment_status);
   const staleRemote =
@@ -258,8 +258,8 @@ async function getPaymentStatus(deps, orderId, options) {
   return { order: order, remoteChecked: remoteChecked, view: getPaymentStatusView(order) };
 }
 
-function getOrder(deps, orderId) {
-  const order = findOrder(deps.db, orderId);
+async function getOrder(deps, orderId) {
+  const order = await findOrder(deps.db, orderId);
   if (!order) throw new ApiError(404, 'Pedido nao encontrado', 'NOT_FOUND');
   return order;
 }
