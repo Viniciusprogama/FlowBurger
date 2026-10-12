@@ -6,3 +6,6 @@ data/
 *.db-wal
 logs/
 .DS_Store
+
+.vercel
+.env*
